@@ -948,6 +948,9 @@ static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, long int
     (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
 #endif
 
+/* None.proto */
+static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
+
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
@@ -1051,6 +1054,7 @@ int __pyx_module_is_main_cython_knn = 0;
 static PyObject *__pyx_builtin_range;
 static const char __pyx_k_K[] = "K";
 static const char __pyx_k_i[] = "i";
+static const char __pyx_k_nb[] = "nb";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_std[] = "std";
 static const char __pyx_k_sum[] = "sum";
@@ -1089,6 +1093,7 @@ static const char __pyx_k_split_data[] = "split_data";
 static const char __pyx_k_std_vector[] = "std_vector";
 static const char __pyx_k_class_train[] = "class_train";
 static const char __pyx_k_mean_vector[] = "mean_vector";
+static const char __pyx_k_with_cython[] = "with_cython";
 static const char __pyx_k_predic_class[] = "predic_class";
 static const char __pyx_k_count_class_1[] = "count_class_1";
 static const char __pyx_k_knn_algo_deux[] = "knn_algo_deux";
@@ -1132,6 +1137,7 @@ static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_matrice_square;
 static PyObject *__pyx_n_s_mean;
 static PyObject *__pyx_n_s_mean_vector;
+static PyObject *__pyx_n_s_nb;
 static PyObject *__pyx_n_s_nb_train;
 static PyObject *__pyx_n_s_newaxis;
 static PyObject *__pyx_n_s_normalize_data;
@@ -1160,10 +1166,12 @@ static PyObject *__pyx_n_s_train_features;
 static PyObject *__pyx_n_s_train_features_transpose;
 static PyObject *__pyx_n_s_train_set;
 static PyObject *__pyx_n_s_transpose;
+static PyObject *__pyx_n_s_with_cython;
 static PyObject *__pyx_n_s_zeros;
 static PyObject *__pyx_pf_10cython_knn_normalize_data(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_raw_data); /* proto */
 static PyObject *__pyx_pf_10cython_knn_2split_data(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data, PyObject *__pyx_v_nb_train); /* proto */
 static PyObject *__pyx_pf_10cython_knn_4knn_algo_deux(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_K, PyObject *__pyx_v_train_set, PyObject *__pyx_v_test_set); /* proto */
+static PyObject *__pyx_pf_10cython_knn_6with_cython(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_K, PyObject *__pyx_v_nb, PyObject *__pyx_v_train_set, PyObject *__pyx_v_test_set); /* proto */
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
@@ -1203,9 +1211,11 @@ static PyObject *__pyx_tuple__24;
 static PyObject *__pyx_tuple__33;
 static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_tuple__37;
+static PyObject *__pyx_tuple__39;
 static PyObject *__pyx_codeobj__34;
 static PyObject *__pyx_codeobj__36;
 static PyObject *__pyx_codeobj__38;
+static PyObject *__pyx_codeobj__40;
 /* Late includes */
 
 /* "cython_knn.pyx":4
@@ -1648,7 +1658,7 @@ static PyObject *__pyx_pf_10cython_knn_2split_data(CYTHON_UNUSED PyObject *__pyx
 /* "cython_knn.pyx":45
  * 
  * 
- * def knn_algo_deux (K,train_set,test_set):             # <<<<<<<<<<<<<<
+ * def knn_algo_deux (K, train_set, test_set):             # <<<<<<<<<<<<<<
  *     """
  *         Function which operates knn algorithm.
  */
@@ -2741,7 +2751,7 @@ static PyObject *__pyx_pf_10cython_knn_4knn_algo_deux(CYTHON_UNUSED PyObject *__
  * 
  *     accuracy = np.sum(class_test == predic_class)/N_test             # <<<<<<<<<<<<<<
  *     error_rate = (1 - accuracy)*100  # en pourcentage
- *     return error_rate, predic_class
+ *     return error_rate
  */
   __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -2805,7 +2815,8 @@ static PyObject *__pyx_pf_10cython_knn_4knn_algo_deux(CYTHON_UNUSED PyObject *__
  * 
  *     accuracy = np.sum(class_test == predic_class)/N_test
  *     error_rate = (1 - accuracy)*100  # en pourcentage             # <<<<<<<<<<<<<<
- *     return error_rate, predic_class
+ *     return error_rate
+ * 
  */
   __pyx_t_2 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_v_accuracy, 1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -2818,25 +2829,19 @@ static PyObject *__pyx_pf_10cython_knn_4knn_algo_deux(CYTHON_UNUSED PyObject *__
   /* "cython_knn.pyx":111
  *     accuracy = np.sum(class_test == predic_class)/N_test
  *     error_rate = (1 - accuracy)*100  # en pourcentage
- *     return error_rate, predic_class             # <<<<<<<<<<<<<<
+ *     return error_rate             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_error_rate);
-  __Pyx_GIVEREF(__pyx_v_error_rate);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_error_rate);
-  __Pyx_INCREF(__pyx_v_predic_class);
-  __Pyx_GIVEREF(__pyx_v_predic_class);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_predic_class);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_r = __pyx_v_error_rate;
   goto __pyx_L0;
 
   /* "cython_knn.pyx":45
  * 
  * 
- * def knn_algo_deux (K,train_set,test_set):             # <<<<<<<<<<<<<<
+ * def knn_algo_deux (K, train_set, test_set):             # <<<<<<<<<<<<<<
  *     """
  *         Function which operates knn algorithm.
  */
@@ -2872,6 +2877,270 @@ static PyObject *__pyx_pf_10cython_knn_4knn_algo_deux(CYTHON_UNUSED PyObject *__
   __Pyx_XDECREF(__pyx_v_predic_class);
   __Pyx_XDECREF(__pyx_v_i);
   __Pyx_XDECREF(__pyx_v_accuracy);
+  __Pyx_XDECREF(__pyx_v_error_rate);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_knn.pyx":114
+ * 
+ * 
+ * def with_cython (K,nb, train_set,test_set):             # <<<<<<<<<<<<<<
+ *     for i in range (nb):
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_knn_7with_cython(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_knn_7with_cython = {"with_cython", (PyCFunction)__pyx_pw_10cython_knn_7with_cython, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_knn_7with_cython(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_K = 0;
+  PyObject *__pyx_v_nb = 0;
+  PyObject *__pyx_v_train_set = 0;
+  PyObject *__pyx_v_test_set = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("with_cython (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_K,&__pyx_n_s_nb,&__pyx_n_s_train_set,&__pyx_n_s_test_set,0};
+    PyObject* values[4] = {0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_K)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_nb)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("with_cython", 1, 4, 4, 1); __PYX_ERR(0, 114, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_train_set)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("with_cython", 1, 4, 4, 2); __PYX_ERR(0, 114, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_test_set)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("with_cython", 1, 4, 4, 3); __PYX_ERR(0, 114, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "with_cython") < 0)) __PYX_ERR(0, 114, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+    }
+    __pyx_v_K = values[0];
+    __pyx_v_nb = values[1];
+    __pyx_v_train_set = values[2];
+    __pyx_v_test_set = values[3];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("with_cython", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 114, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("cython_knn.with_cython", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_10cython_knn_6with_cython(__pyx_self, __pyx_v_K, __pyx_v_nb, __pyx_v_train_set, __pyx_v_test_set);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_knn_6with_cython(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_K, PyObject *__pyx_v_nb, PyObject *__pyx_v_train_set, PyObject *__pyx_v_test_set) {
+  CYTHON_UNUSED PyObject *__pyx_v_i = NULL;
+  PyObject *__pyx_v_error_rate = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  Py_ssize_t __pyx_t_3;
+  PyObject *(*__pyx_t_4)(PyObject *);
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  __Pyx_RefNannySetupContext("with_cython", 0);
+
+  /* "cython_knn.pyx":115
+ * 
+ * def with_cython (K,nb, train_set,test_set):
+ *     for i in range (nb):             # <<<<<<<<<<<<<<
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ *     return (error_rate)
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_v_nb); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
+    __pyx_t_4 = NULL;
+  } else {
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_4)) {
+      if (likely(PyList_CheckExact(__pyx_t_2))) {
+        if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      } else {
+        if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_1); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      }
+    } else {
+      __pyx_t_1 = __pyx_t_4(__pyx_t_2);
+      if (unlikely(!__pyx_t_1)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 115, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "cython_knn.pyx":116
+ * def with_cython (K,nb, train_set,test_set):
+ *     for i in range (nb):
+ *         error_rate = knn_algo_deux(K,train_set,test_set)             # <<<<<<<<<<<<<<
+ *     return (error_rate)
+ */
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_knn_algo_deux); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_5)) {
+      PyObject *__pyx_temp[4] = {__pyx_t_6, __pyx_v_K, __pyx_v_train_set, __pyx_v_test_set};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_1);
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
+      PyObject *__pyx_temp[4] = {__pyx_t_6, __pyx_v_K, __pyx_v_train_set, __pyx_v_test_set};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_1);
+    } else
+    #endif
+    {
+      __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (__pyx_t_6) {
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      }
+      __Pyx_INCREF(__pyx_v_K);
+      __Pyx_GIVEREF(__pyx_v_K);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_K);
+      __Pyx_INCREF(__pyx_v_train_set);
+      __Pyx_GIVEREF(__pyx_v_train_set);
+      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_v_train_set);
+      __Pyx_INCREF(__pyx_v_test_set);
+      __Pyx_GIVEREF(__pyx_v_test_set);
+      PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_v_test_set);
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_error_rate, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "cython_knn.pyx":115
+ * 
+ * def with_cython (K,nb, train_set,test_set):
+ *     for i in range (nb):             # <<<<<<<<<<<<<<
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ *     return (error_rate)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cython_knn.pyx":117
+ *     for i in range (nb):
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ *     return (error_rate)             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_v_error_rate)) { __Pyx_RaiseUnboundLocalError("error_rate"); __PYX_ERR(0, 117, __pyx_L1_error) }
+  __Pyx_INCREF(__pyx_v_error_rate);
+  __pyx_r = __pyx_v_error_rate;
+  goto __pyx_L0;
+
+  /* "cython_knn.pyx":114
+ * 
+ * 
+ * def with_cython (K,nb, train_set,test_set):             # <<<<<<<<<<<<<<
+ *     for i in range (nb):
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("cython_knn.with_cython", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_i);
   __Pyx_XDECREF(__pyx_v_error_rate);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -2942,6 +3211,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_matrice_square, __pyx_k_matrice_square, sizeof(__pyx_k_matrice_square), 0, 0, 1, 1},
   {&__pyx_n_s_mean, __pyx_k_mean, sizeof(__pyx_k_mean), 0, 0, 1, 1},
   {&__pyx_n_s_mean_vector, __pyx_k_mean_vector, sizeof(__pyx_k_mean_vector), 0, 0, 1, 1},
+  {&__pyx_n_s_nb, __pyx_k_nb, sizeof(__pyx_k_nb), 0, 0, 1, 1},
   {&__pyx_n_s_nb_train, __pyx_k_nb_train, sizeof(__pyx_k_nb_train), 0, 0, 1, 1},
   {&__pyx_n_s_newaxis, __pyx_k_newaxis, sizeof(__pyx_k_newaxis), 0, 0, 1, 1},
   {&__pyx_n_s_normalize_data, __pyx_k_normalize_data, sizeof(__pyx_k_normalize_data), 0, 0, 1, 1},
@@ -2970,6 +3240,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_train_features_transpose, __pyx_k_train_features_transpose, sizeof(__pyx_k_train_features_transpose), 0, 0, 1, 1},
   {&__pyx_n_s_train_set, __pyx_k_train_set, sizeof(__pyx_k_train_set), 0, 0, 1, 1},
   {&__pyx_n_s_transpose, __pyx_k_transpose, sizeof(__pyx_k_transpose), 0, 0, 1, 1},
+  {&__pyx_n_s_with_cython, __pyx_k_with_cython, sizeof(__pyx_k_with_cython), 0, 0, 1, 1},
   {&__pyx_n_s_zeros, __pyx_k_zeros, sizeof(__pyx_k_zeros), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
@@ -3219,7 +3490,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "cython_knn.pyx":45
  * 
  * 
- * def knn_algo_deux (K,train_set,test_set):             # <<<<<<<<<<<<<<
+ * def knn_algo_deux (K, train_set, test_set):             # <<<<<<<<<<<<<<
  *     """
  *         Function which operates knn algorithm.
  */
@@ -3227,6 +3498,18 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__37);
   __Pyx_GIVEREF(__pyx_tuple__37);
   __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(3, 0, 23, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_knn_pyx, __pyx_n_s_knn_algo_deux, 45, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 45, __pyx_L1_error)
+
+  /* "cython_knn.pyx":114
+ * 
+ * 
+ * def with_cython (K,nb, train_set,test_set):             # <<<<<<<<<<<<<<
+ *     for i in range (nb):
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ */
+  __pyx_tuple__39 = PyTuple_Pack(6, __pyx_n_s_K, __pyx_n_s_nb, __pyx_n_s_train_set, __pyx_n_s_test_set, __pyx_n_s_i, __pyx_n_s_error_rate); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__39);
+  __Pyx_GIVEREF(__pyx_tuple__39);
+  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(4, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_knn_pyx, __pyx_n_s_with_cython, 114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3519,13 +3802,25 @@ if (!__Pyx_RefNanny) {
   /* "cython_knn.pyx":45
  * 
  * 
- * def knn_algo_deux (K,train_set,test_set):             # <<<<<<<<<<<<<<
+ * def knn_algo_deux (K, train_set, test_set):             # <<<<<<<<<<<<<<
  *     """
  *         Function which operates knn algorithm.
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10cython_knn_5knn_algo_deux, NULL, __pyx_n_s_cython_knn); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_knn_algo_deux, __pyx_t_1) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "cython_knn.pyx":114
+ * 
+ * 
+ * def with_cython (K,nb, train_set,test_set):             # <<<<<<<<<<<<<<
+ *     for i in range (nb):
+ *         error_rate = knn_algo_deux(K,train_set,test_set)
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10cython_knn_7with_cython, NULL, __pyx_n_s_cython_knn); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_with_cython, __pyx_t_1) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "cython_knn.pyx":1
@@ -4328,6 +4623,11 @@ static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, CYTHON_U
     return (inplace ? PyNumber_InPlaceSubtract : PyNumber_Subtract)(op1, op2);
 }
 #endif
+
+/* None */
+    static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
+    PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
+}
 
 /* Import */
     static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {

@@ -42,7 +42,7 @@ def split_data (data,nb_train):
     return(train_set,test_set,N_test)
 
 
-def knn_algo_deux (K,train_set,test_set):
+def knn_algo_deux (K, train_set, test_set):
     """
         Function which operates knn algorithm.
         parameters:
@@ -108,4 +108,10 @@ def knn_algo_deux (K,train_set,test_set):
 
     accuracy = np.sum(class_test == predic_class)/N_test 
     error_rate = (1 - accuracy)*100  # en pourcentage
-    return error_rate, predic_class
+    return error_rate
+
+
+def with_cython (K,nb, train_set,test_set):
+    for i in range (nb):
+        error_rate = knn_algo_deux(K,train_set,test_set)
+    return (error_rate)
